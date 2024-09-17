@@ -1,0 +1,438 @@
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --color: #1e293b;
+  --c1: #fbda61;
+  --c2: #ff5acd;
+  --c3: #2563eb;
+  --gradient: linear-gradient(
+    60deg,
+    var(--c3),
+    var(--c2),
+    var(--c1),
+    var(--c2),
+    var(--c3)
+  );
+  --scale-start: 0.5;
+  --scale-end: 1.001;
+  --hover-offset: 5%;
+
+  /*
+    linear easing generator
+    https://linear-easing-generator.netlify.app/
+  */
+  /* prettier-ignore */
+  --ease-elastic: linear(
+    0, 0.186 2.1%, 0.778 7.2%, 1.027 9.7%, 1.133, 1.212, 1.264, 1.292 15.4%,
+    1.296, 1.294, 1.285, 1.269 18.9%, 1.219 20.9%, 1.062 25.8%, 0.995 28.3%,
+    0.944 31.1%, 0.93, 0.921, 0.92 35.7%, 0.926, 0.94 39.7%, 1.001 47%, 1.014,
+    1.021 52.4%, 1.02 56.4%, 1 65.5%, 0.994 70.7%, 1.001 88.4%, 1
+  );
+  --ease-bounce-out: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@media (prefers-reduced-motion) {
+  :root {
+    --scale-start: var(--scale-end);
+    --ease-elastic: ease-out;
+    --ease-bounce-out: ease-out;
+    --hover-offset: 0;
+  }
+}
+
+body {
+  padding-inline: 1rem;
+  font-family: system-ui;
+  font-weight: 800;
+  font-size: calc(1rem + 10vmin);
+  text-align: center;
+  overflow-x: hidden;
+  background: linear-gradient(135deg, #F3FEB8, #FFDE4D, #FFB22C, #FF4C4C);
+}
+
+.intro {
+  display: flex;
+  justify-content: center;
+  gap: 0.2em;
+  font-size: 0.5em;
+  -webkit-margin-before: calc(50vh - 1ex);
+          margin-block-start: calc(50vh - 1ex);
+}
+
+.intro span {
+  display: inline-block;
+}
+
+.intro span:first-child {
+  transform-origin: right bottom;
+  -webkit-animation: wave 250ms 1s ease 3;
+          animation: wave 250ms 1s ease 3;
+}
+
+.intro span:last-child {
+  -webkit-animation: hover 500ms linear infinite;
+          animation: hover 500ms linear infinite;
+}
+
+.box {
+  margin-block: 80vh;
+}
+
+.cardcontainer {
+  /* Center content */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Use height for centering the card in the viewport */
+}
+.cardcontainer a{
+    margin: auto;
+}
+
+.cardbox {
+  width: 30rem;
+  aspect-ratio: 2.5 / 3.5;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  overflow: hidden;
+  perspective: 1000px; /* Add perspective for 3D effect */
+  transition: transform 0.5s, box-shadow 0.5s; /* Add transition to .cardbox */
+  transform-style: preserve-3d; /* Preserve 3D transformation for children */
+  position: relative; /* Needed for the pseudo-element */
+}
+
+.cardbox::after {
+  display: block;
+      content: '';
+      position: absolute;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 120%;
+      background: linear-gradient(226deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0.4) 35%, rgba(255,255,255,0.2) 42%, rgba(255,255,255,0) 60%);
+      transform: translateY(-20%);
+      will-change: transform;
+      transition: transform .65s cubic-bezier(0.18, 0.9, 0.58, 1);
+}
+
+.wrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2; /* Place above the gloss effect */
+}
+
+.cover-image {
+  width: 90%; /* Adjust the size as needed */
+  height: 90%;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: translateZ(0);
+}
+
+.cardbox:hover {
+  transform: rotateX(7deg) translateY(-6px);
+  box-shadow: 2px 35px 32px -8px rgba(0, 0, 0, 0.75);
+  &::after {
+      transform: translateY(0%);
+    }
+}
+
+.text {
+  margin-inline: auto;
+  padding-block: 0.2em;
+  max-inline-size: 15ch;
+  text-wrap: balance;
+  background-image: var(--gradient);
+  background-size: 400%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+@supports (animation-timeline: view()) {
+  .box {
+    -webkit-animation: trigger steps(1) both, fade linear both;
+            animation: trigger steps(1) both, fade linear both;
+    animation-timeline: view();
+    animation-range: entry 80% contain 40%;
+  }
+  .cardbox {
+    -webkit-animation: trigger steps(1) both, fade linear both;
+            animation: trigger steps(1) both, fade linear both;
+    animation-timeline: view();
+    animation-range: entry 80% contain 40%;
+  }
+    .sidetext {
+    -webkit-animation: pop-back 300ms var(--ease-bounce-out) forwards;
+            animation: pop-back 300ms var(--ease-bounce-out) forwards;
+  }
+
+  @container style(--animate: true) {
+    .sidetext {
+      -webkit-animation: pop 600ms var(--ease-elastic) forwards,
+        text-gradient 1s cubic-bezier(0, 0.55, 0.45, 1) forwards;
+              animation: pop 600ms var(--ease-elastic) forwards,
+        text-gradient 1s cubic-bezier(0, 0.55, 0.45, 1) forwards;
+    }
+  }
+  .text {
+    -webkit-animation: pop-back 300ms var(--ease-bounce-out) forwards;
+            animation: pop-back 300ms var(--ease-bounce-out) forwards;
+  }
+
+  @container style(--animate: true) {
+    .text {
+      -webkit-animation: pop 600ms var(--ease-elastic) forwards,
+        text-gradient 1s cubic-bezier(0, 0.55, 0.45, 1) forwards;
+              animation: pop 600ms var(--ease-elastic) forwards,
+        text-gradient 1s cubic-bezier(0, 0.55, 0.45, 1) forwards;
+    }
+  }
+}
+
+.smile {
+  width: 1em;
+  margin-inline: auto;
+  overflow: hidden;
+  white-space: nowrap;
+  -webkit-margin-after: calc(50vh - 1ex);
+          margin-block-end: calc(50vh - 1ex);
+}
+
+.smile div {
+  display: flex;
+  -webkit-animation: wink 1s steps(1) infinite;
+          animation: wink 1s steps(1) infinite;
+}
+
+.smile span {
+  display: inline-block;
+  width: 1em;
+}
+
+@-webkit-keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@-webkit-keyframes trigger {
+  to {
+    --animate: true;
+  }
+}
+
+@keyframes trigger {
+  to {
+    --animate: true;
+  }
+}
+
+@-webkit-keyframes pop {
+  from {
+    scale: var(--scale-start);
+  }
+  to {
+    scale: var(--scale-end);
+  }
+}
+
+@keyframes pop {
+  from {
+    scale: var(--scale-start);
+  }
+  to {
+    scale: var(--scale-end);
+  }
+}
+
+@-webkit-keyframes text-gradient {
+  100% {
+    background-position: 150% center;
+  }
+}
+
+@keyframes text-gradient {
+  100% {
+    background-position: 150% center;
+  }
+}
+
+@-webkit-keyframes pop-back {
+  from {
+    scale: var(--scale-end);
+  }
+  to {
+    color: var(--color);
+    scale: var(--scale-start);
+  }
+}
+
+@keyframes pop-back {
+  from {
+    scale: var(--scale-end);
+  }
+  to {
+    color: var(--color);
+    scale: var(--scale-start);
+  }
+}
+
+@-webkit-keyframes wink {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  25%,
+  75% {
+    translate: -100% 0;
+  }
+  50% {
+    translate: -200% 0;
+  }
+}
+
+@keyframes wink {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  25%,
+  75% {
+    translate: -100% 0;
+  }
+  50% {
+    translate: -200% 0;
+  }
+}
+
+@-webkit-keyframes wave {
+  50% {
+    rotate: 10deg;
+  }
+}
+
+@keyframes wave {
+  50% {
+    rotate: 10deg;
+  }
+}
+
+@-webkit-keyframes hover {
+  from,
+  to {
+    translate: 0 calc(var(--hover-offset) * -1);
+  }
+  50% {
+    translate: 0 var(--hover-offset);
+  }
+}
+
+@keyframes hover {
+  from,
+  to {
+    translate: 0 calc(var(--hover-offset) * -1);
+  }
+  50% {
+    translate: 0 var(--hover-offset);
+  }
+}
+
+
+
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:800);
+#world {
+  background: #ebe5e7;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+}
+.sidetext {
+  margin-inline: auto;
+  padding-block: 0.2em;
+  max-inline-size: 100ch;
+  text-wrap: balance;
+  background-image: var(--gradient);
+  background-size: 20%;
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
+
+
+/* Add this at the end of the current credits.css */
+
+/* Adjust font sizes and layouts for smaller screens */
+@media (max-width: 768px) {
+  .intro {
+    font-size: 1em;
+  }
+  .cardcontainer {
+    flex-direction: column; /* Stack cards vertically */
+    width: 20%;
+    height: auto;
+    padding: 1rem; /* Add padding */
+    align-items: center; /* Center the cards */
+  }
+  .cardbox {
+    width: 22rem;
+  }
+  .text {
+    font-size: 4rem; /* Further reduce text size */
+    overflow: hidden;
+  }
+
+  .sidetext {
+    font-size: 3rem; /* Further reduce side text size */
+  }
+}
+
+/* Further adjustments for extra small screens */
+@media (max-width: 480px) {
+  .intro {
+    font-size: 1em;
+  }
+  .cardcontainer {
+    flex-direction: column; /* Stack cards vertically */
+    width: 20%;
+    height: auto;
+    padding: 1rem; /* Add padding */
+    align-items: center; /* Center the cards */
+  }
+  .cardbox {
+    width: 22rem;
+  }
+  .text {
+    font-size: 4rem; /* Further reduce text size */
+    overflow: hidden;
+  }
+
+  .sidetext {
+    font-size: 3rem;
+  }
+}
