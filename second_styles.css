@@ -1900,8 +1900,6 @@ button:hover {
 @media (max-width: 600px) {
     .wrap {
         width: 100%;
-        margin: 20% auto;
-        bottom: 100%;
     }
     .gift{
         left: auto;
