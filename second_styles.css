@@ -1907,5 +1907,19 @@ button:hover {
     .cake2{
         right: -5%;
     }
+    #hat{
+        left: 38%;
+    }
+    .flour {
+        left:88%;
+        width: 45%;
+    }
+    .sugar {
+        right:85%;
+        width: 45%;
+    }
+    .batter-in-blender {
+        left: 10%;
+    }
 }
 
