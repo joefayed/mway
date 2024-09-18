@@ -44,12 +44,12 @@
 
 body {
   padding-inline: 1rem;
-  font-family: system-ui;
+  font-family: 'Roboto', sans-serif;
   font-weight: 800;
   font-size: calc(1rem + 10vmin);
   text-align: center;
   overflow-x: hidden;
-  background: linear-gradient(135deg, #F3FEB8, #FFDE4D, #FFB22C, #FF4C4C);
+  background: linear-gradient(135deg, #F3FEB8, #FFDE4D);
 }
 
 .intro {
@@ -150,6 +150,7 @@ body {
 }
 
 .text {
+  font-family: 'Great Vibes', cursive;
   margin-inline: auto;
   padding-block: 0.2em;
   max-inline-size: 15ch;
@@ -159,6 +160,7 @@ body {
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 @supports (animation-timeline: view()) {
